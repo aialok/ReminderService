@@ -5,11 +5,13 @@ const htmlTemplate = require("./email-template");
 
 // const { sendBasicEmail } = require("../src/services/email-services");
 
-const newNotificationTicket = new NotificationTicket();
+// const newNotificationTicket = new NotificationTicket();
 
 const cronSetup = () => {
   cron.schedule("*/1 * * * *", async () => {
     const newNotification = await emailServices.fetchPendingEmails();
+    // console.log(newNotification);
+    // newNotification.forEach((email)=> console.log(email));
     newNotification.forEach((email) => {
       sender.sendMail(
         {

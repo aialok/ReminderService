@@ -1,6 +1,8 @@
 const sender = require("../config/emailConfig");
 const TicketRepository = require("../repository/notification-ticket");
 const notificationRepository = new TicketRepository();
+
+
 const sendBasicEmail = (mailFrom, mailTO, mailSubject, mailBody, mailHtml) => {
   sender.sendMail({
     from: mailFrom,
@@ -30,8 +32,23 @@ const createNotification = async (data) => {
   } catch (error) {}
 };
 
+const subscribeEvents = async (payload) => {
+  const service = payload.service;
+  const data = payload.data;
+
+  switch (service) {
+    case "CREATE_NOTIFICATION":
+      createNotification(data);
+      break;
+    default:
+      console.log("No valid event is choosen");
+      break;
+  }
+};
+
 module.exports = {
   sendBasicEmail,
   fetchPendingEmails,
   createNotification,
+  subscribeEvents
 };
